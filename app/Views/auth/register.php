@@ -20,15 +20,32 @@
                 
                 <h2 class="my-5 text-center">Register</h2>
                 
-                <form>
+                <?php 
+                    $session = session();
+                    $errors = $session->getFlashdata('errors');
+                ?>
+                
+                <?php if($errors){ ?>
+                    <div class="alert alert-danger">
+                        Terjadi Kesalahan
+                        <hr class="dropdown-divider">
+                        <?php foreach($errors as $err){ ?>
+                        <ul>
+                            <li><?= $err ?></li>
+                        </ul>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+                
+                <form method="post">
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
-                  <input type="text" class="form-control" placeholder="Username" name="Username" required>
+                  <input type="text" class="form-control" placeholder="Username" name="username" required>
                 </div>
                 
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock"></i></i></span>
-                  <input type="text" class="form-control" placeholder="Password" name="password" required>
+                  <input type="password" class="form-control" placeholder="Password" name="password" required>
                 </div>
                 
                 <div>
@@ -36,7 +53,7 @@
                 </div>
                 
                 <div class="d-grid gap-2 mt-4">
-                  <button class="btn btn-success" type="button">Register</button>
+                  <button class="btn btn-success" type="submit" name="submit">Register</button>
                 </div>
 
                 </form>

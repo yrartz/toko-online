@@ -20,7 +20,25 @@
                 
                 <h2 class="my-5 text-center">Login</h2>
                 
-                <form>
+                <?php
+                    $session = session();
+                    $sukses = $session->getFlashdata('sukses');
+                    $errors = $session->getFlashdata('errors');
+                ?>
+                
+                <?php if($sukses){ ?>
+                    <div class="alert alert-success">
+                        <?= $sukses ?>
+                    </div>
+                <?php } ?>
+                
+                <?php if($errors){ ?>
+                    <div class="alert alert-danger">
+                        <?= $errors ?>
+                    </div>
+                <?php } ?>
+                
+                <form method="post">
                 <div class="input-group mb-3">
                   <span class="input-group-text" id="basic-addon1"><i class="fas fa-user"></i></span>
                   <input type="text" class="form-control" placeholder="Username" name="username">
@@ -31,17 +49,12 @@
                   <input type="password" class="form-control" placeholder="Password" name="password">
                 </div>
                 
-                <div class="input-group mb-3">
-                  <span class="input-group-text" id="basic-addon1"><i class="fas fa-lock"></i></i></span>
-                  <input type="password" class="form-control" placeholder="Ulangi Password" name="repeat">
-                </div>
-                
                 <div>
                 <a href="<?= base_url('auth/register')?>" class="text-dark">Belum punya akun?</a>
                 </div>
                 
                 <div class="d-grid gap-2 mt-4">
-                  <button class="btn btn-success" type="button">Register</button>
+                  <button class="btn btn-success" type="submit" name="submit">Register</button>
                 </div>
 
                 </form>

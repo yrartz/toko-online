@@ -11,6 +11,8 @@
     <title><?php echo $title ?></title>
   </head>
   <body>
+      
+      <?php $session = session() ?>
 
     <!-- navbar -->
       <nav class="navbar navbar-expand-lg navbar-dark bg-success">
@@ -40,10 +42,11 @@
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="#">Edit Profil</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Logout</a></li>
+                <li><a class="dropdown-item" href="<?= base_url('auth/logout')?>">Logout</a></li>
           </ul>
         </li>
             <a class="nav-link" href="#"><img src="<?php echo base_url('profil/profil.png')?>" width="60px" class="rounded-circle mx-auto"></a>
+            <?php echo $session->get('username') ?>
       </ul>
     </div>
   </div>
