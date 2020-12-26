@@ -54,7 +54,7 @@
                 </div>
                 
                 <div class="d-grid gap-2 mt-4">
-                  <button class="btn btn-success" type="submit" name="submit">Register</button>
+                  <button class="btn btn-success" type="submit" name="submit">Login</button>
                 </div>
 
                 </form>

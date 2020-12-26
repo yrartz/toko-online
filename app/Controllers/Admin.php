@@ -1,23 +1,148 @@
 <?php namespace App\Controllers;
+use \App\Models\ProdukModel;
 
 class Admin extends BaseController
 {
-	public function index()
-	{
-	    $data['title'] = 'Halaman Admin';
-		return view('admin/index', $data);
-	}
-	
-	public function tambah(){
-	    $data['title'] = 'Tambah Produk';
-	    return view('admin/tambah', $data);
-	}
-	
-	public function update(){
-	    $data['title'] = 'Update Produk';
-	    return view('admin/update', $data);
-	}
+    
+    public function __construct(){
+        $this->validation = \Config\Services::validation();
+        $this->session = session();
+    }
+    
+    public function index(){
+        $produkModel = new ProdukModel();
+        $data['title'] = 'Halaman Admin';
+        $data['produk'] = $produkModel->getProduk();
+        
+        if(empty($data['produk'])){
+            session()->setFlashdata('kosong', 'Tidak ada produk');
+        }
+        
+        return view('admin/index', $data);
+    }
+    
+    public function detail($slug){
+        $produkModel = new ProdukModel();
+        $data['title'] = 'Detail Produk';
+        $data['produk'] = $produkModel->getProduk($slug);
+        return view('admin/detail', $data);
+    }
+    
+    public function tambah(){
+        $data['title'] = 'Tambah Produk';
+        return view('admin/tambah', $data);
+    }
+    
+    public function save(){
+        $produkModel = new ProdukModel();
+        $slug = url_title($this->request->getPost('nama'), '-', true);
+        
+        $data = $this->request->getPost();
+        $this->validation->run($data, 'tambah');
+        $errors = $this->validation->getErrors();
+        
+        if($errors){
+            session()->setFlashdata('errors', $errors);
+            return redirect()->to(base_url('admin/tambah'))->withInput();  
+        }
+        
+        //ambil gambar
+        $gambar = $this->request->getFile('gambar');
+        $namaGambar = $gambar->getRandomName();
+        $gambar->move('img', $namaGambar);
+        
 
-	//--------------------------------------------------------------------
+        $produkModel->save([
+            'nama' => $this->request->getPost('nama'),
+            'stok' => $this->request->getPost('stok'),
+            'harga' => $this->request->getPost('harga'),
+            'deskripsi' => $this->request->getPost('deskripsi'),
+            'slug' => $slug,
+            'gambar' => $namaGambar
+            ]);
+            
+            session()->setFlashdata('tambah', 'Produk berhasil ditambahkan');
+            
+            return redirect()->to(base_url('admin/index'));
+    }
+    
+    public function hapus(){
+        $id = $this->request->getPost('id_produk');
+        $produkModel = new ProdukModel();
+        $data = $produkModel->find($id);
+        unlink('img/'.$data['gambar']);
+        
+        $produkModel->delete($id);
+        
+            session()->setFlashdata('hapus', 'Produk berhasil dihapus');
+            return redirect()->to(base_url('admin/index'));
+            
+    }
+    
+    public function update($slug){
+        $produkModel = new ProdukModel();
+        $data['title'] = 'Update Produk';
+        $data['produk'] = $produkModel->getProduk($slug);
+        return view('admin/update', $data);
+    }
+    
+    public function edit(){
+        $id = $this->request->getPost('idproduk');
+        $produkModel = new ProdukModel();
+        
+        //ambil data sesuai id 
+        $produk = $produkModel->find($id);
+        
+        //validasi inputan
+        $data = $this->request->getPost();
+        $this->validation->run($data, 'edit');
+        $errors = $this->validation->getErrors();
+        
+        if($errors){
+            session()->setFlashdata('errors', $errors);
+            return redirect()->to('/admin/update/'.$this->request->getPost('slug'))->withInput();
+        }
+        
+        //buat slug 
+        $slug = url_title($this->request->getPost('nama'), '-', true);
+        
+        //cek apakah ganti gambar 
+       
+        $gambar = $this->request->getFile('gambar');
+        
+        //kalau tidak ganti gambar 
+        if($gambar->getError() == 4){
+            $namaGambar = $this->request->getPost('gambarLama');
+        }
+        else{
+            //jika ganti gambar 
+            $fileGambar = $this->request->getFile('gambar');
+            
+            //buat nama random 
+            $namaGambar = $fileGambar->getRandomName();
+            
+            //pindahkan gambarnya
+            $fileGambar->move('img', $namaGambar);
+            
+            //hapus gambar lamanya
+            unlink('img/'.$produk['gambar']);
+        }
+        
+        //save datanya
+        $produkModel->save([
+            'id' => $id,
+            'nama' => $this->request->getPost('nama'),
+            'stok' => $this->request->getPost('stok'),
+            'harga' => $this->request->getPost('harga'),
+            'deskripsi' => $this->request->getPost('deskripsi'),
+            'slug' => $slug,
+            'gambar' => $namaGambar
+            ]);
+        
+        session()->setFlashdata('update', 'Produk berhasil di update');
+        return redirect()->to(base_url('admin/index'));
+        
+    }
+   	//--------------------------------------------------------------------
 
 }

@@ -12,6 +12,38 @@
                 <button class="btn btn-outline-primary" type="button" id="button-addon2">Cari</button>
             </div>
             
+            <?php 
+                $session = session();
+                $tambah = $session->getFlashdata('tambah');
+                $hapus = $session->getFlashdata('hapus');
+                $kosong = $session->getFlashdata('kosong');
+                $update = $session->getFlashdata('update');
+            ?>
+            
+            <?php if($tambah){ ?>
+                <div class="alert alert-success">
+                    <?= $tambah ?>
+                </div>
+            <?php } ?>
+            
+            <?php if($hapus){ ?>
+                <div class="alert alert-info">
+                    <?= $hapus ?>
+                </div>
+            <?php } ?>
+            
+            <?php if($kosong){ ?>
+                <div class="alert alert-warning">
+                    <?= $kosong ?>
+                </div>
+            <?php } ?>
+            
+            <?php if($update){ ?>
+                <div class="alert alert-success">
+                    <?= $update ?>
+                </div>
+            <?php } ?>
+            
             <a href="<?php echo base_url('admin/tambah')?>" class="btn btn-primary mb-2">Tambah Produk</a>
             
             <table class="table">
@@ -24,16 +56,17 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <?php $i=1 ?>
+                    <?php foreach($produk as $p){ ?>
                     <tr>
-                        <th>1</th>
-                        <th>Sagu</th>
-                        <th>image</th>
-                        <th>
-                            <a href="<?php echo base_url('admin/detail')?>" class="btn btn-info m-1"><i class="fas fa-info-circle mr-1"></i> Detail</a>
-                            <a href="<?php echo base_url('admin/update')?>" class="btn btn-warning m-1"><i class="fas fa-pen-square"></i> Edit</a>
-                            <a href="<?php echo base_url('admin/hapus')?>" class="btn btn-danger m-1"><i class="fas fa-trash"></i> Hapus</a>
-                        </th>
+                        <td><?= $i++?></td>
+                        <td><?= $p['nama']?></td>
+                        <td><img src="/img/<?php echo $p['gambar']?>" width="100px"></td>
+                        <td>
+                            <a href="/admin/detail/<?php echo $p['slug']?>" class="btn btn-info m-1"><i class="fas fa-info-circle mr-1"></i> Detail</a>
+                        </td>
                     </tr>
+                    <?php } ?>
                 </tbody>
             </table>
             
