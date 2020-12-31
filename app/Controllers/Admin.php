@@ -1,5 +1,7 @@
 <?php namespace App\Controllers;
 use \App\Models\ProdukModel;
+use \App\Models\UserModel;
+use \App\Models\TransaksiModel;
 
 class Admin extends BaseController
 {
@@ -11,13 +13,32 @@ class Admin extends BaseController
     
     public function index(){
         $produkModel = new ProdukModel();
+        $transaksiModel = new TransaksiModel();
+        
+        $pesananBaru = $transaksiModel->where('status', 0)->findAll();
+        
+        if($pesananBaru){
+            session()->setFlashdata('pesananBaru', 'Ada pesanan baru!');
+        }
+        
+        if(session()->get('role') != 'admin')
+        {
+            return redirect()->to(base_url('user/index'));
+        }
+        
+        if(!session()->has('isLoggedIn'))
+        {
+            return redirect()->to(base_url('auth/login'));
+        }
+        
+        $data['pesanan'] = $transaksiModel->findAll();
         $data['title'] = 'Halaman Admin';
         $data['produk'] = $produkModel->getProduk();
         
         if(empty($data['produk'])){
             session()->setFlashdata('kosong', 'Tidak ada produk');
         }
-        
+       
         return view('admin/index', $data);
     }
     
@@ -25,6 +46,16 @@ class Admin extends BaseController
         $produkModel = new ProdukModel();
         $data['title'] = 'Detail Produk';
         $data['produk'] = $produkModel->getProduk($slug);
+        $transaksiModel = new TransaksiModel();
+        
+        $produk = $produkModel->getProduk($slug);
+        
+	    $namaProduk = $produk['nama'];
+	    
+	    $transaksi = $transaksiModel->where('produk', $namaProduk)->findAll();
+	    $terjual = count($transaksi);
+	    $data['jumlah'] = $terjual;
+        
         return view('admin/detail', $data);
     }
     
@@ -55,6 +86,7 @@ class Admin extends BaseController
         $produkModel->save([
             'nama' => $this->request->getPost('nama'),
             'stok' => $this->request->getPost('stok'),
+            'berat' => $this->request->getPost('berat'),
             'harga' => $this->request->getPost('harga'),
             'deskripsi' => $this->request->getPost('deskripsi'),
             'slug' => $slug,
@@ -133,6 +165,7 @@ class Admin extends BaseController
             'id' => $id,
             'nama' => $this->request->getPost('nama'),
             'stok' => $this->request->getPost('stok'),
+            'berat' => $this->request->getPost('berat'),
             'harga' => $this->request->getPost('harga'),
             'deskripsi' => $this->request->getPost('deskripsi'),
             'slug' => $slug,
@@ -142,6 +175,51 @@ class Admin extends BaseController
         session()->setFlashdata('update', 'Produk berhasil di update');
         return redirect()->to(base_url('admin/index'));
         
+    }
+    
+    public function pelanggan(){
+        
+        $data['title'] = 'Daftar Pelanggan';
+        
+        $userModel = new UserModel();
+        
+        $data['user'] = $userModel->findAll();
+        
+        if(empty($data['user'])){
+            session()->setFlashdata('kosong', 'Tidak ada pelanggan');
+        }
+        
+        return view('admin/pelanggan', $data);
+    }
+    
+    public function pesanan()
+    {
+        $data['title'] = 'Daftar Pesanan';
+        
+        $transaksiModel = new TransaksiModel();
+        
+        $data['pesanan'] = $transaksiModel->findAll();
+        
+        if(empty($data['pesanan'])){
+        session()->setFlashdata('empty', 'Belum ada transaksi');
+        }
+        
+        return view('admin/pesanan', $data);
+    }
+    
+    public function detailpesanan($id)
+    {
+        $transaksiModel = new TransaksiModel();
+        
+        $data['transaksi'] = $transaksiModel->find($id);
+        $data['title'] = 'Detail Pesanan';
+        
+        $transaksiModel->save([
+            'id' => $id,
+            'status' => 1
+            ]);
+        
+        return view('admin/detailpesanan', $data);
     }
    	//--------------------------------------------------------------------
 

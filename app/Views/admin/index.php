@@ -18,29 +18,36 @@
                 $hapus = $session->getFlashdata('hapus');
                 $kosong = $session->getFlashdata('kosong');
                 $update = $session->getFlashdata('update');
+                $pesananBaru = $session->getFlashdata ('pesananBaru');
             ?>
             
             <?php if($tambah){ ?>
-                <div class="alert alert-success">
+                <div class="alert alert-success p-3">
                     <?= $tambah ?>
                 </div>
             <?php } ?>
             
             <?php if($hapus){ ?>
-                <div class="alert alert-info">
+                <div class="alert alert-info p-3">
                     <?= $hapus ?>
                 </div>
             <?php } ?>
             
             <?php if($kosong){ ?>
-                <div class="alert alert-warning">
+                <div class="alert alert-warning p-3">
                     <?= $kosong ?>
                 </div>
             <?php } ?>
             
             <?php if($update){ ?>
-                <div class="alert alert-success">
+                <div class="alert alert-success p-3">
                     <?= $update ?>
+                </div>
+            <?php } ?>
+            
+            <?php if($pesananBaru){ ?>
+                <div class="my-3 alert alert-warning p-3">
+                    <?php echo $pesananBaru ?> <a href="<?php echo base_url('admin/pesanan')?>" class="alert-link">Cek di sini</a>
                 </div>
             <?php } ?>
             

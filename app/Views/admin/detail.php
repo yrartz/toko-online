@@ -5,8 +5,9 @@
     <div class="konten p-3">
         <img src="/img/<?php echo $produk['gambar']?>" class="d-block mx-auto my-3" width="150px">
         <h3 class="mb-4 text-center"><?php echo $produk['nama']?></h3>
-        <h4 class="text-success"><?php echo $produk['harga']?></h4>
+        <h4 class="text-success">Rp <?php echo $produk['harga']?></h4>
         <p class="text-muted">Stok: <?php echo $produk['stok']?></p>
+        <p><?php echo $jumlah ?> Terjual</p>
         <hr class="dropdown-divider my-3">
         <p><?php echo $produk['deskripsi']?></p>
         

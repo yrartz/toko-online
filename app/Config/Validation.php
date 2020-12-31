@@ -87,6 +87,40 @@ class Validation
 	        ]
 	    ];
 	    
+	    public $beli = [
+	        'nama' => 'min_length[3]',
+	        'email' => 'valid_email',
+	        'alamat' => 'min_length[10]',
+	        'jumlah' => 'greater_than_equal_to[1]'
+	        ];
+	        
+	   public $beli_errors = [
+	       'nama' => [
+	           'min_length' => '{field} harus berisi minimal 3 karakter'
+	           ],
+	           'email' => [
+	               'valid_email' =>  '{field} anda tidak valid'
+	               ],
+	           'alamat' => [
+	              'min_length' => '{field} ini harus berisi minimal 10 karakter'
+	               ],
+	           'jumlah' => [
+	               'greater_than_equal_to' => '{field} produk minimal 1'
+	               ]
+	       ];
+	       
+	  public $struk = [
+	      'struk' => 'max_size[gambar,1048]|mime_in[gambar,image/png,image/jpg,image/jpeg]|is_image[gambar]'
+	      ];
+	  
+	  public $struk_errors = [
+	      'struk' => [
+	          'max_size' => 'Ukuran gambar harus di bawah 1MB',
+	          'mime_in' => 'Ekstensi file harus JPG, JPEG, atau PNG',
+	          'is_image' => 'Yang anda upload bukan gambar'
+	          ]
+	      ];
+	    
 	    
 	//--------------------------------------------------------------------
 }

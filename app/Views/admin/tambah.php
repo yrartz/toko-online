@@ -34,6 +34,10 @@
             <input type="number" class="form-control" id="stok" name="stok" min="0" value="<?= old('stok')?>" required>
             </div>
             <div class="mb-3">
+                <label for="berat" class="form-label">Berat (Gram)</label>
+                <input type="number" class="form-control" name="berat" value="<?php echo old('berat')?>">
+            </div>
+            <div class="mb-3">
                 <label for="harga" class="form-label">Harga Produk</label>
             <input type="number" class="form-control" id="harga" name="harga" min="0" value="<?= old('harga') ?>" required>
             </div>

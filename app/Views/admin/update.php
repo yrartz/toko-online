@@ -42,6 +42,11 @@
                 </div>
                 
                 <div class="mb-3">
+                    <label for="berat" class="form-label">Berat (Gram)</label>
+                    <input type="number" class="form-control" name="berat" id="berat" value="<?php echo (old('berat')) ? old('berat') : $produk['berat'] ?>">
+                </div>
+                
+                <div class="mb-3">
                     <label for="harga" class="form-label">Harga Produk</label>
                     <input type="text" name="harga" id="harga" class="form-control" value="<?php echo (old('harga')) ? old('harga') : $produk['harga']?>" required>
                 </div>
