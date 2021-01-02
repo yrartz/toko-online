@@ -7,10 +7,12 @@
             
             <h2 class="text-center mb-4">Daftar Produk</h2>
             
+            <form method="post" action="">
             <div class="input-group mb-5">
-                <input type="text" class="form-control" placeholder="Cari...">
-                <button class="btn btn-outline-primary" type="button" id="button-addon2">Cari</button>
+                <input type="text" class="form-control" placeholder="Cari Produk..." name="keyword">
+                <button class="btn btn-outline-success" type="submit" name="cari">Cari</button>
             </div>
+            </form>
             
             <?php 
                 $session = session();
@@ -63,7 +65,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php $i=1 ?>
+                    <?php $i=1 + (2 * ($currentPage - 1)) ?>
                     <?php foreach($produk as $p){ ?>
                     <tr>
                         <td><?= $i++?></td>
@@ -76,7 +78,7 @@
                     <?php } ?>
                 </tbody>
             </table>
-            
+            <?php echo $pager->links('produk', 'produk_page') ?>
         </div>
     </div>
 

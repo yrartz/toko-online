@@ -6,7 +6,7 @@ class ProdukModel extends Model
 {
     protected $table = 'produk';
     protected $useTimestamps = true;
-    protected $allowedFields = ['nama', 'stok', 'harga','deskripsi', 'slug', 'gambar'];
+    protected $allowedFields = ['nama', 'stok', 'harga','berat', 'deskripsi', 'slug', 'gambar'];
     
    public function getProduk($slug = false)
    {
@@ -16,5 +16,10 @@ class ProdukModel extends Model
        
        return $this->where(['slug' => $slug])->first();
    }
+    
+    public function search($keyword)
+    {
+        return $this->table('produk')->like('nama', $keyword);
+    }
     
     }    

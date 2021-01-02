@@ -12,8 +12,27 @@ class User extends BaseController
 	public function index()
 	{
 	    $produkModel = new produkModel();
-	    $data['produk'] = $produkModel->getProduk();
+	    
 	    $data['title'] = 'Toko Online';
+	    
+        //searhing
+        $keyword = $this->request->getPost('keyword');
+        
+        if($keyword){
+            $cariProduk = $produkModel->search($keyword);
+        }
+        else {
+            $cariProduk = $produkModel;
+        }
+        
+        $data['produk'] = $cariProduk->paginate(3, 'produk');
+	    $data['pager'] = $produkModel->pager;
+	    $data['keyword'] = $keyword;
+	    
+	    if(empty($data['produk'])){
+	        session()->setFlashdata('cari', 'Tidak ada produk');
+	    }
+	    
 		return view('user/index', $data);
 	}
 	
@@ -132,9 +151,11 @@ class User extends BaseController
 	
 	public function pesanan(){
 	    $transaksiModel = new TransaksiModel();
+	    $transaksiModel->orderBy('id', 'DESC');
 	    
 	    $data['title'] = 'Data Pesanan';
-	    $data['pesanan'] = $transaksiModel->findAll();
+	    $data['pesanan'] = $transaksiModel->where('username', session()->get('username'))->findAll();
+	   
 	    
 	    if(!session()->has('isLoggedIn'))
 	    {

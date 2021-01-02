@@ -27,7 +27,7 @@
             <?php echo csrf_field() ?>
             <div class="mb-3">
                 <label for="nama" class="form-label">Nama Produk</label>
-                <input type="text" class="form-control" id="nama" name="nama" value="<?= old('nama')?>" required>
+                <input type="text" class="form-control" id="nama" name="nama" value="<?= old('nama')?>" required autocomplete="off">
             </div>
             <div class="mb-3">
                 <label for="stok" class="form-label">Stok Produk</label>
@@ -39,7 +39,7 @@
             </div>
             <div class="mb-3">
                 <label for="harga" class="form-label">Harga Produk</label>
-            <input type="number" class="form-control" id="harga" name="harga" min="0" value="<?= old('harga') ?>" required>
+            <input type="number" class="form-control" id="harga" name="harga" min="0" value="<?= old('harga') ?>" required autocomplete="off">
             </div>
             <div class="mb-3">
                 <label for="deskripsi" class="form-label">Deskripsi</label>

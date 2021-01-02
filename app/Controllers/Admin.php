@@ -15,6 +15,15 @@ class Admin extends BaseController
         $produkModel = new ProdukModel();
         $transaksiModel = new TransaksiModel();
         
+        //fitur search
+        $keyword = $this->request->getPost('keyword');
+        if($keyword){
+            $cariProduk = $produkModel->search($keyword);
+        }
+        else{
+            $cariProduk = $produkModel;
+        }
+        
         $pesananBaru = $transaksiModel->where('status', 0)->findAll();
         
         if($pesananBaru){
@@ -33,12 +42,20 @@ class Admin extends BaseController
         
         $data['pesanan'] = $transaksiModel->findAll();
         $data['title'] = 'Halaman Admin';
-        $data['produk'] = $produkModel->getProduk();
+      //  $data['produk'] = $produkModel->getProduk();
+      
+      //pagination
+      $data['produk'] = $cariProduk->paginate(2, 'produk');
+      $data['pager'] = $produkModel->pager;
+      
+      $currentPage = $this->request->getGet('page_produk') ? $this->request->getGet('page_produk') : 1;
+      
+      $data['currentPage'] = $currentPage;
         
         if(empty($data['produk'])){
             session()->setFlashdata('kosong', 'Tidak ada produk');
         }
-       
+        
         return view('admin/index', $data);
     }
     
@@ -182,6 +199,7 @@ class Admin extends BaseController
         $data['title'] = 'Daftar Pelanggan';
         
         $userModel = new UserModel();
+        $userModel->orderBy('id', 'DESC');
         
         $data['user'] = $userModel->findAll();
         
@@ -197,6 +215,8 @@ class Admin extends BaseController
         $data['title'] = 'Daftar Pesanan';
         
         $transaksiModel = new TransaksiModel();
+        
+        $transaksiModel->orderBy('id', 'DESC');
         
         $data['pesanan'] = $transaksiModel->findAll();
         
@@ -220,6 +240,26 @@ class Admin extends BaseController
             ]);
         
         return view('admin/detailpesanan', $data);
+    }
+    
+    public function hapuspesanan()
+    {
+        $transaksiModel = new TransaksiModel();
+        
+        $id = $this->request->getPost('id');
+        
+        //hapus bukti pembayaran
+        $data = $transaksiModel->find($id);
+        $gambar = $data['gambar'];
+        unlink('pesanan/'.$gambar);
+        
+        //hapus data transaksi
+        $transaksiModel->delete($id);
+        
+        session()->setFlashdata('hapus', 'Riwayat pesanan berhasil dihapus');
+        
+        return redirect()->to(base_url('admin/pesanan'));
+        
     }
    	//--------------------------------------------------------------------
 

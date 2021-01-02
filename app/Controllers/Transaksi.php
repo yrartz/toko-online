@@ -21,15 +21,15 @@ class Transaksi extends BaseController
 
             $errors = $this->validation->getErrors();
             
-            $gambar = $this->request->getFile('struk');
+            $gambar = $this->request->getFile('gambar');
             $namaGambar = $gambar->getRandomName();
             $gambar->move('pesanan', $namaGambar);
             
-           
+            $slug = $this->request->getPost('slug');
             
             if($errors){
                 session()->setFlashdata('errors', $errors);
-                return redirect()->to(base_url('user)/beli'))->withInput();
+                return redirect()->to('/user/beli/'.$this->request->getPost('slug'))->withInput();
             }
             
             //ambil id
@@ -45,7 +45,7 @@ class Transaksi extends BaseController
             $stokProduk = $stokLama - $stokDiBeli;
             
             $transaksiModel->save([
-                'id_user' => session()->get('id'),
+                'username' => session()->get('username'),
                 'produk' => $this->request->getPost('produk'),
                 'nama' => $this->request->getPost('nama'),
                 'email' => $this->request->getPost('email'),

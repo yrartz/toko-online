@@ -26,9 +26,11 @@
                 <li class="nav-item">
                     <a class="nav-link <?php if($title == 'Toko Online') { echo 'active'; } ?>" aria-current="page" href="<?= base_url('user/index')?>">Produk</a>
                 </li>
+                <?php if(session()->get('role') == 'user'){ ?>
                 <li class="nav-item">
                   <a class="nav-link <?php if($title == 'Data Pesanan'){ echo 'active'; } ?>" href="<?= base_url('user/pesanan')?>" tabindex="-1">Pesanan</a>
                 </li>
+                <?php } ?>
                 <?php if(session()->get('role') == 'admin'){ ?>
                 <li class="nav-item">
                     <a href="<?php echo base_url('admin/index')?>" class="nav-link">Dashboard</a>

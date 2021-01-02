@@ -27,7 +27,9 @@
             
             <?php echo csrf_field() ?>
             
-            <input type="text" name="id" value="<?php echo $produk['id']?>">
+            <input type="hidden" name="id" value="<?php echo $produk['id']?>">
+            
+            <input type="hidden" name="slug" value="<?php echo $produk['slug']?>">
             
         <div class="mb-3 p-3">
             <label for="produk" class="form-label">Nama Produk</label>
@@ -111,7 +113,7 @@
         
         <div class="mb-3 p-3">
             <label class="form-label" for="struk">Bukti Pembayaran</label>
-            <input type="file" class="form-control" id="struk" name="struk">
+            <input type="file" class="form-control" id="struk" name="gambar" required>
         </div>
         <i>Silahkan transfer ke:
             <ul>

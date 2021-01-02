@@ -9,6 +9,7 @@
             $session = session();
             $kosong = $session->getFlashdata ('empty');
             $beli = $session->getFlashdata ('beli');
+            $hapus = $session->getFlashdata('hapus');
         ?>
         
         <?php if($kosong){ ?>
@@ -23,27 +24,36 @@
             </div>
         <?php } ?>
         
-        <table class="table table-responsive">
-            <thead>
-                <tr>
-                    <th>No</th>
-                    <th>Nama</th>
-                    <th>Produk<th>
-                    <th>Detail</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php $i=1 ?>
-                <?php foreach($pesanan as $p){ ?>
-                <tr>
-                    <td><?php echo $i++ ?></td>
-                    <td><?php echo $p['nama']?></td>
-                    <td><?php echo $p['produk']?></td>
-                    <td><a href="/admin/detailpesanan/<?php echo $p['id']?>" class="btn btn-info">Detail</a></td>
-                </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+        <?php if($hapus){ ?>
+            <div class="my-3 alert alert-warning">
+                <?php echo $hapus ?>
+            </div>
+        <?php } ?>
+        
+          <table class="table">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama</th>
+                        <th>Produk</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php $i=1 ?>
+                    <?php foreach($pesanan as $p){ ?>
+                    <tr>
+                        <td><?= $i++?></td>
+                        <td><?= $p['nama']?></td>
+                        <td><?php echo $p['produk']?></td>
+                        <td>
+                            <a href="/admin/detailpesanan/<?php echo $p['id']?>" class="btn btn-info m-1"><i class="fas fa-info-circle mr-1"></i> Detail</a>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        
     </div>
 
 <?php echo $this->endSection() ?>
