@@ -22,12 +22,17 @@
         <a class="btn btn-success btn-block <?php if($produk['stok'] == 0) {echo 'disabled';} ?>" href="/user/beli/<?php echo $produk['slug']?>">Beli</a>
         </div>
         
-        <div class="logo position-fixed" style="top:70%; left:80%">
-            <div class="row">
-            <p style="font-size:10px" class="mb-0">Contact Us</p>
-            <a href="https://wa.me/6281805779263"><img src="<?php echo base_url('profil/wa.png')?>" width="60%" alt="whatsapp"></a>
-            </div>
-        </div>
+        
+        <div id="disqus_thread"></div>
+<script>
+(function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://toko-online-2.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+
         
     </div>
     
